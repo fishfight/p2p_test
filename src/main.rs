@@ -8,6 +8,8 @@ fn main() {
     let sc = stunclient::StunClient::with_google_stun_server();
     let self_addr = format!("{}", sc.query_external_address(&socket).unwrap());
 
+    socket.set_nonblocking(true).unwrap();
+
     println!("Your IP, share this with other player: {}", self_addr);
 
     println!("Input other player IP and press Enter:");
@@ -16,21 +18,18 @@ fn main() {
 
     println!("IP entered: {}", other_addr);
     socket.connect(&other_addr).unwrap();
-    
+
     println!("connected");
-   
-    for _ in 0..20 {
-      socket.send(&[66]).unwrap();
-    }
 
-    println!("sended");
+    socket.send(&[66]).unwrap();
 
-    let mut buf = [0; 2];
-    socket.recv(&mut buf).unwrap();
-
-    println!("Success, recvd! {:?}", buf);
-
-    // keep socket alive
     loop {
+        socket.send(&[66]).unwrap();
+
+        let mut buf = [0; 2];
+        match socket.recv(&mut buf) {
+            Ok(count) => println!("Success, recvd! {}, {:?}", count, buf),
+            Err(..) => {}
+        }
     }
 }
