@@ -16,15 +16,21 @@ fn main() {
 
     println!("IP entered: {}", other_addr);
     socket.connect(&other_addr).unwrap();
+    
+    println!("connected");
+   
+    for _ in 0..20 {
+      socket.send(&[66]).unwrap();
+    }
 
+    println!("sended");
+
+    let mut buf = [0; 2];
+    socket.recv(&mut buf).unwrap();
+
+    println!("Success, recvd! {:?}", buf);
+
+    // keep socket alive
     loop {
-        println!("connected");
-        socket.send(&[66]).unwrap();
-        println!("sended, waiting for other player's test data");
-
-        let mut buf = [0; 2];
-        socket.recv(&mut buf).unwrap();
-
-        println!("Success, recvd! {:?}", buf);
     }
 }
