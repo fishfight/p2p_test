@@ -1,0 +1,7 @@
+[package]
+name = "p2p_test"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+stunclient = { git = "https://github.com/not-fl3/rust-stunclient", default-features = false }
