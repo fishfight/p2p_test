@@ -5,3 +5,4 @@ edition = "2018"
 
 [dependencies]
 stunclient = { git = "https://github.com/not-fl3/rust-stunclient", default-features = false }
+nanoserde = "0.1"
